@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart'; import 'package:url_launcher/url_launcher.dart';
+
+void main() => runApp(NexoraApp());
+
+class NexoraApp extends StatelessWidget { @override Widget build(BuildContext context) { return MaterialApp( debugShowCheckedModeBanner: false, title: 'Nexora Digital', theme: ThemeData(primarySwatch: Colors.blue), home: MainPage(), ); } }
+
+class MainPage extends StatefulWidget { @override _MainPageState createState() => _MainPageState(); }
+
+class _MainPageState extends State<MainPage> { int _currentIndex = 0; final List<Widget> _pages = [HomePage(), ServicesPage(), ContactPage()];
+
+@override Widget build(BuildContext context) { return Scaffold( body: _pages[_currentIndex], bottomNavigationBar: BottomNavigationBar( currentIndex: _currentIndex, onTap: (index) => setState(() => _currentIndex = index), items: [ BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'), BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Services'), BottomNavigationBarItem(icon: Icon(Icons.contact_phone), label: 'Contact'), ], ), ); } }
+
+class HomePage extends StatelessWidget { @override Widget build(BuildContext context) { return Scaffold( appBar: AppBar(title: Text('Nexora Digital')), body: Center( child: Padding( padding: const EdgeInsets.all(16.0), child: Column( mainAxisAlignment: MainAxisAlignment.center, children: [ Text('Welcome to Nexora Digital!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), SizedBox(height: 20), Text('Affordable, professional web & app solutions.', textAlign: TextAlign.center), ], ), ), ), ); } }
+
+class ServicesPage extends StatelessWidget { final List<Map<String, String>> services = [ {"title": "Website Design", "price": "R5,000 – R18,000 (≈ $270 – $990)"}, {"title": "E-commerce Website", "price": "R20,000 – R35,000+ (≈ $1,100 – $1,900+)"}, {"title": "Basic Mobile App", "price": "R15,000 – R25,000 (≈ $800 – $1,300)"}, {"title": "Advanced App", "price": "R70,000 – R120,000+ (≈ $3,800 – $6,500+)"}, {"title": "Email Setup", "price": "R800 – R1,800 (≈ $45 – $100)"}, {"title": "Logo Design", "price": "R2,500 – R4,500 (≈ $140 – $250)"}, {"title": "Monthly Maintenance", "price": "R800 – R2,500/month (≈ $45 – $140/month)"}, ];
+
+@override Widget build(BuildContext context) { return Scaffold( appBar: AppBar(title: Text('Services')), body: ListView.builder( padding: EdgeInsets.all(16), itemCount: services.length, itemBuilder: (context, index) { final service = services[index]; return Card( elevation: 3, margin: EdgeInsets.symmetric(vertical: 8), child: ListTile( title: Text(service['title']!), subtitle: Text(service['price']!), ), ); }, ), ); } }
+
+class ContactPage extends StatelessWidget { final String phoneNumber = "27XXXXXXXXX"; // Replace with your WhatsApp number
+
+Future<void> openWhatsApp() async { final url = "https://wa.me/$phoneNumber?text=Hello%20Nexora%20Digital!%20I'm%20interested%20in%20your%20services."; if (await canLaunch(url)) { await launch(url); } else { throw 'Could not open WhatsApp'; } }
+
+@override Widget build(BuildContext context) { return Scaffold( appBar: AppBar(title: Text('Contact Us')), body: Center( child: Padding( padding: const EdgeInsets.all(16.0), child: Column( mainAxisAlignment: MainAxisAlignment.center, children: [ Text('Need assistance or a quote?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center), SizedBox(height: 20), ElevatedButton.icon( icon: Icon(Icons.whatsapp), label: Text('Chat on WhatsApp'), onPressed: openWhatsApp, ), ], ), ), ), ); } }
+
